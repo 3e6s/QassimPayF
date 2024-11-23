@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using QassimPay.Data;
@@ -11,9 +12,11 @@ using QassimPay.Data;
 namespace QassimPay.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241122160026_MapUserTable")]
+    partial class MapUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,8 +108,8 @@ namespace QassimPay.Migrations
                     b.Property<int>("Sender_ID")
                         .HasColumnType("integer");
 
-                    b.Property<DateOnly>("T_date")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("T_date")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Receipt_ID");
 
@@ -153,21 +156,23 @@ namespace QassimPay.Migrations
 
             modelBuilder.Entity("QassimPay.Models.WalletModel", b =>
                 {
-                    b.Property<int>("Wallet_ID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Wallet_ID"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
 
                     b.Property<decimal>("Balance")
                         .HasColumnType("numeric");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("User_ID")
                         .HasColumnType("integer");
 
-                    b.HasKey("Wallet_ID");
-
-                    b.HasIndex("User_ID");
+                    b.HasKey("ID");
 
                     b.HasIndex("User_ID");
 
