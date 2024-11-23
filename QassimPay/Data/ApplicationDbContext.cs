@@ -18,6 +18,12 @@ namespace QassimPay.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+            // Explicitly map the UserModel to the "USER" table
+            modelBuilder.Entity<UserModel>()
+                .ToTable("USER"); // Ensure case-sensitive mapping to the USER table
+
             modelBuilder.Entity<WalletModel>()
             .HasKey(w => w.Wallet_ID);
 
