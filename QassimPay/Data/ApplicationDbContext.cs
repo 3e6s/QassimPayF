@@ -19,9 +19,16 @@ namespace QassimPay.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<WalletModel>()
-                    .HasOne(w => w.User)
-                    .WithMany(u => u.Wallets)
-                    .HasForeignKey(w => w.User_ID);
+            .HasKey(w => w.Wallet_ID);
+
+            modelBuilder.Entity<WalletModel>()
+                .Property(w => w.Wallet_ID)
+                .ValueGeneratedOnAdd();  // Ensure Wallet_ID is auto-generated
+
+            modelBuilder.Entity<WalletModel>()
+                .HasOne(w => w.User)
+                .WithMany(u => u.Wallets)
+                .HasForeignKey(w => w.User_ID);
 
             modelBuilder.Entity<AddressModel>()
                 .HasOne(a => a.User)

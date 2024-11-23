@@ -6,8 +6,7 @@ namespace QassimPay.Models
     public class WalletModel
     {
 
-        public int ID { get; set; }
-        public string Name { get; set; } = string.Empty;
+        [Key] public int Wallet_ID { get; set; }
         public decimal Balance { get; set; }
 
         public int User_ID { get; set; }
