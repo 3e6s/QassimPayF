@@ -54,6 +54,31 @@ namespace QassimPay.Controllers
 
             return View();
         }
+        [HttpPost]
+        [HttpPost]
+        public IActionResult CreateWallet(decimal balance)
+        {
+            var username = HttpContext.Session.GetString("Username");
+            if (username == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var user = _context.User.FirstOrDefault(u => u.Username == username);
+
+            if (!_context.Wallet.Any(w => w.User_ID == user.ID))
+            {
+                var wallet = new WalletModel
+                {
+                    User_ID = user.ID,
+                    Balance = balance
+                };
+                _context.Wallet.Add(wallet);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Wallet");
+        }
 
         [HttpGet]
         public IActionResult Transfer()
