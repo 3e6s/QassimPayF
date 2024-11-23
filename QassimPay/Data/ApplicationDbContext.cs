@@ -25,6 +25,13 @@ namespace QassimPay.Data
                 .ToTable("USER"); // Ensure case-sensitive mapping to the USER table
 
             modelBuilder.Entity<WalletModel>()
+            .HasKey(w => w.Wallet_ID);
+
+            modelBuilder.Entity<WalletModel>()
+                .Property(w => w.Wallet_ID)
+                .ValueGeneratedOnAdd();  // Ensure Wallet_ID is auto-generated
+
+            modelBuilder.Entity<WalletModel>()
                 .HasOne(w => w.User)
                 .WithMany(u => u.Wallets)
                 .HasForeignKey(w => w.User_ID);

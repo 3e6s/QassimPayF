@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using QassimPay.Models;
 using QassimPay.Data;
-using System.Diagnostics;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace QassimPay.Controllers
 {
@@ -16,6 +17,7 @@ namespace QassimPay.Controllers
             _logger = logger;
             _context = context;
         }
+
         [HttpGet]
         public IActionResult Login()
         {
@@ -29,18 +31,101 @@ namespace QassimPay.Controllers
             if (user != null)
             {
                 HttpContext.Session.SetString("Username", user.Username);
-                return RedirectToAction("Index");
+                return RedirectToAction("Wallet");
             }
 
             ModelState.AddModelError("", "Wrong username or password");
             return View();
         }
 
-        public IActionResult Index()
+        public IActionResult Wallet()
         {
             var username = HttpContext.Session.GetString("Username");
+            if (username == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var user = _context.User.FirstOrDefault(u => u.Username == username);
+            var wallet = _context.Wallet.FirstOrDefault(w => w.User_ID == user.ID);
+
             ViewBag.Username = username;
+            ViewBag.Wallet = wallet;
+
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult Transfer()
+        {
+            var username = HttpContext.Session.GetString("Username");
+            if (username == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Transfer(int recipientWalletId, decimal amount)
+        {
+            var username = HttpContext.Session.GetString("Username");
+            if (username == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var sender = _context.User.FirstOrDefault(u => u.Username == username);
+            var senderWallet = _context.Wallet.FirstOrDefault(w => w.User_ID == sender.ID);
+            var recipientWallet = _context.Wallet.FirstOrDefault(w => w.Wallet_ID == recipientWalletId);
+
+            if (recipientWallet == null)
+            {
+                ViewBag.ErrorMessage = "This wallet does not exist.";
+                return View();
+            }
+
+            var recipientUser = _context.User.FirstOrDefault(u => u.ID == recipientWallet.User_ID);
+            if (senderWallet == null)
+            {
+                ViewBag.ErrorMessage = "You do not have a wallet.";
+                return View();
+            }
+
+            if (senderWallet.Balance < amount)
+            {
+                ViewBag.ErrorMessage = "Insufficient balance.";
+                return View();
+            }
+            using var transaction = _context.Database.BeginTransaction();
+
+            try
+            {
+                senderWallet.Balance -= amount;
+                recipientWallet.Balance += amount;
+                _context.SaveChanges();
+
+                _context.Database.ExecuteSqlRaw(
+                    "INSERT INTO \"Transfer\" (\"Sender_ID\", \"Reciver\", \"AmountM\") VALUES ({0}, {1}, {2})",
+                    senderWallet.Wallet_ID, recipientUser.ID, amount);
+
+                transaction.Commit();
+                ViewBag.SuccessMessage = "Transfer successful.";
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                ViewBag.ErrorMessage = ex;
+                // Log the exception
+            }
+            return View();
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login");
         }
 
         [HttpGet]
@@ -80,12 +165,6 @@ namespace QassimPay.Controllers
             }
 
             return View(user);
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
