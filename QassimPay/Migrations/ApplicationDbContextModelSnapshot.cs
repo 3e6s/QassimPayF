@@ -105,8 +105,8 @@ namespace QassimPay.Migrations
                     b.Property<int>("Sender_ID")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("T_date")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("T_date")
+                        .HasColumnType("date");
 
                     b.HasKey("Receipt_ID");
 
