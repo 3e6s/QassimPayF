@@ -11,7 +11,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 
 
-builder.Services.AddSession(); // Add this line
+builder.Services.AddSession(); 
 
 var app = builder.Build();
 

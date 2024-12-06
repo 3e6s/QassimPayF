@@ -1,0 +1,69 @@
+﻿@model TransferModel
+@{
+    Layout = null;
+    ViewData["Title"] = "Billing";
+}
+<head>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/QassimPay.styles.css" asp-append-version="true" />
+</head>
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container">
+            <a class="navbar-brand" href="/Home/Login">QassimPay</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item"><a class="nav-link" href="/Home/Wallet">Wallet</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Home/Transfer">Transfer</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Home/Billing">Billing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Home/Transfer_History">Transfer History</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Home/Billing_History">Billing History</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Home/Currency-exchange">Currency Exchange</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Home/Address">Address</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-action="Logout">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+
+<div class="container mt-5">
+    <h1 class="text-center">Pay Your Bill</h1>
+
+    @if (ViewBag.SuccessMessage != null)
+    {
+        <div class="alert alert-success text-center">@ViewBag.SuccessMessage</div>
+    }
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger text-center">@ViewBag.ErrorMessage</div>
+    }
+
+    <form asp-action="Billing" method="post">
+        <div class="form-group">
+            <label for="billingNumber">Billing Number</label>
+            <input type="text" name="billingNumber" class="form-control" placeholder="Enter your bill number" required />
+        </div>
+
+        <div class="form-group">
+            <label for="amount">Amount</label>
+            <input type="number" name="amount" class="form-control" step="0.01" placeholder="Enter amount to pay" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Pay</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+

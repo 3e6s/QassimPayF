@@ -3,6 +3,11 @@
     Layout = null;
     ViewData["Title"] = "Transfer";
 }
+<head>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/QassimPay.styles.css" asp-append-version="true" />
+</head>
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container">
@@ -28,7 +33,7 @@
 
 
 <div class="container mt-4">
-    <h2>Transfer Funds</h2>
+    <h2 class="text-center">Transfer Funds</h2>
     <form method="post">
         <div class="form-group">
             <label for="recipientWalletId">To Whom (Wallet ID)</label>
@@ -41,6 +46,13 @@
         <button type="submit" class="btn btn-primary mt-3">Transfer</button>
     </form>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
 
 @if (ViewBag.ErrorMessage != null)
 {

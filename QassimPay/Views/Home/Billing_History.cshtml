@@ -1,0 +1,72 @@
+﻿@model IEnumerable<QassimPay.Models.BillingModel>
+
+@{
+    Layout = null;
+    ViewBag.Title = "Billing History";
+}
+<head>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/QassimPay.styles.css" asp-append-version="true" />
+</head>
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container">
+            <a class="navbar-brand" href="/Home/Login">QassimPay</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item"><a class="nav-link" href="/Home/Wallet">Wallet</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Home/Transfer">Transfer</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Home/Billing">Billing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Home/Transfer_History">Transfer History</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Home/Billing_History">Billing History</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Home/Currency-exchange">Currency Exchange</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Home/Address">Address</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-action="Logout">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+
+<h2 class ="text-center">Billing History</h2>
+
+@if (Model.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Bill ID</th>
+                <th>Bill Number</th>
+                <th>Amount</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var billing in Model)
+            {
+                <tr>
+                    <td>@billing.Billing_ID</td>
+                    <td>@billing.Billing_number</td>
+                    <td>@billing.Amount</td>
+                    <td>@billing.Date.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No billing records found.</p>
+}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+
