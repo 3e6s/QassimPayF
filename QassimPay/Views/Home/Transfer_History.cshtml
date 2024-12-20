@@ -1,104 +1,146 @@
 ﻿@model IEnumerable<QassimPay.Models.TransferModel>
 
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Transfer History";
 
-    // Cast ViewBag.User to UserModel
     var user = ViewBag.User as QassimPay.Models.UserModel;
-
-    // Ensure user is not null before using its ID
-    int userId = user != null ? user.ID : 0;
-
-    // Retrieve userWalletId from ViewBag
+    int userId = user?.ID ?? 0;
     int userWalletId = ViewBag.UserWalletID;
 }
 
 <head>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/QassimPay.styles.css" asp-append-version="true" />
 </head>
-<header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container">
-            <a class="navbar-brand" href="/Home/Login">QassimPay</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item"><a class="nav-link" href="/Home/Wallet">Wallet</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/Home/Transfer">Transfer</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/Home/Billing">Billing</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/Home/Transfer_History">Transfer History</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/Home/Billing_History">Billing History</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/Home/Currency-exchange">Currency Exchange</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/Home/Address">Address</a></li>
-                    <li class="nav-item"><a class="nav-link" asp-action="Logout">Logout</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
 
-<h2 class="text-center" >Transfer History</h2>
+<div class="container mt-5">
+    <h2 class="text-center mb-4" style="color: #003366;">Transfer History</h2>
 
-@if (Model.Any()) {
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Receipt ID</th>
-                <th>Amount</th>
-                <th>Sender</th>
-                <th>Receiver</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var transfer in Model)
-            {
+    @if (Model.Any())
+    {
+        <table class="modern-table">
+            <thead>
                 <tr>
-                    <td>@transfer.Receipt_ID</td>
-                    <td>@transfer.AmountM</td>
-                    <td>
-                        @if (transfer.Sender_ID == userWalletId)
-                        {
-                            <span>YOU</span>
-                        }
-                        else
-                        {
-                            <span>@transfer.Sender_ID</span>
-                        }
-                    </td>
-                    <td>
-               
-                        @if (transfer.Reciver == userId)
-                        {
-                            <span>YOU</span>
-                        }
-                        else
-                        {
-                            <span>@transfer.Reciver</span>
-                        }
-                    </td>
-                    <td>@transfer.T_date.ToString("yyyy-MM-dd")</td>
+                    <th>Receipt ID</th>
+                    <th>Amount</th>
+                    <th>Sender</th>
+                    <th>Receiver</th>
+                    <th>Date</th>
                 </tr>
+            </thead>
+            <tbody>
+                @foreach (var transfer in Model)
+                {
+                    <tr>
+                        <td>@transfer.Receipt_ID</td>
+                        <td class="text-danger">@transfer.AmountM.ToString("C")</td>
+                        <td>
+                            @if (transfer.Sender_ID == userWalletId)
+                            {
+                                <span class="text-success">YOU</span>
+                            }
+                            else
+                            {
+                                <span>@transfer.Sender_ID</span>
+                            }
+                        </td>
+                        <td>
+                            @if (transfer.Reciver == userId)
+                            {
+                                <span class="text-success">YOU</span>
+                            }
+                            else
+                            {
+                                <span>@transfer.Reciver</span>
+                            }
+                        </td>
+                        <td>@transfer.T_date.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="alert alert-secondary mt-3" role="alert">
+            <strong>Note:</strong> The Receiver value represents the receiver's ID, and the Sender value represents the wallet's ID.
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning text-center" role="alert">
+            No transfer records found.
+        </div>
+    }
+</div>
+
+<style>
+    .modern-table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+    }
+
+        .modern-table thead tr {
+            background-color: #003366;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .modern-table th, .modern-table td {
+            padding: 15px;
+            text-align: left;
+            text-align: center;
+        }
+
+        .modern-table tbody tr {
+            border-bottom: 1px solid #e6ddd3;
+        }
+
+            .modern-table tbody tr:nth-of-type(even) {
+                background-color: #f4f6f9;
             }
-        </tbody>
 
-    </table>
+            .modern-table tbody tr:hover {
+                background-color: #dce7f2;
+            }
 
-    <p style="color:darkgrey" >NOTE: The Reciver Value will be the Reciver's ID And The Sender'S Value Will Be The Wallet's ID</p>
-}
-else
-{
-    <p>No transfer records found.</p>
-}
+        .modern-table td {
+            color: #003366;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+    h2 {
+        font-size: 2rem;
+        color: #003366;
+        font-weight: bold;
+    }
+
+    .alert {
+        font-size: 1.1rem;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .alert-warning {
+        background-color: #fffbea;
+        color: #856404;
+        border: 1px solid #ffeeba;
+    }
+
+    .alert-secondary {
+        background-color: #f4f6f9;
+        color: #003366;
+        border: 1px solid #e6ddd3;
+    }
+</style>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>

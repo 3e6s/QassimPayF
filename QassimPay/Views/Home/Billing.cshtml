@@ -1,69 +1,150 @@
-﻿@model TransferModel
+﻿@model QassimPay.Models.TransferModel
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Billing";
 }
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/QassimPay.styles.css" asp-append-version="true" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&display=swap">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .form-box {
+            margin: 62px auto;
+            background-color: #e9e9ed;
+            padding: 54px;
+            border-radius: 35px;
+            box-shadow: 0 0 86px rgba(0, 0, 0, 0.4);
+            max-width: 874px;
+        }
+
+            .form-box h1 {
+                font-size: 2em;
+                color: #036; /* Heading text color */
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+        .input-box {
+            position: relative;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+            .input-box label {
+                position: absolute;
+                top: 50%;
+                left: 10px;
+                transform: translateY(-50%);
+                font-size: 1em;
+                color: #036; /* Label text color */
+                font-weight: 500;
+                pointer-events: none;
+                transition: 0.5s;
+            }
+
+            .input-box input:focus ~ label,
+            .input-box input:valid ~ label {
+                top: -5px;
+                font-size: 0.85em;
+                color: #001366; /* Focused label color */
+            }
+
+            .input-box input {
+                width: 100%;
+                background: transparent; /* Transparent background */
+                border: none;
+                outline: none;
+                font-size: 1em;
+                color: #036; /* Input text color */
+                font-weight: 600;
+                padding: 14px;
+                border-bottom: 2px solid #036; /* Border color */
+            }
+
+                .input-box input:focus {
+                    background-color: transparent; /* Keep background transparent on focus */
+                }
+
+        .btn {
+            width: 100%;
+            height: 52px;
+            background: #036;
+            border: none;
+            outline: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            color: #fff; /* Button text color */
+            font-weight: 572;
+            margin-top: 30px;
+        }
+
+            .btn:hover {
+                background: #002366; /* Button hover background color */
+                color: #fff;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            }
+
+        .alert {
+            text-align: center;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
 </head>
-<header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container">
-            <a class="navbar-brand" href="/Home/Login">QassimPay</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item"><a class="nav-link" href="/Home/Wallet">Wallet</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/Home/Transfer">Transfer</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/Home/Billing">Billing</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/Home/Transfer_History">Transfer History</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/Home/Billing_History">Billing History</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/Home/Currency-exchange">Currency Exchange</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/Home/Address">Address</a></li>
-                    <li class="nav-item"><a class="nav-link" asp-action="Logout">Logout</a></li>
-                </ul>
+
+<body>
+    <!-- Billing Form -->
+    <div class="form-box">
+        <h1>Pay Your Bill</h1>
+
+        <!-- Alerts -->
+        @if (ViewBag.SuccessMessage != null)
+        {
+            <div class="alert alert-success">@ViewBag.SuccessMessage</div>
+        }
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+        }
+
+        <!-- Form -->
+        <form asp-action="Billing" method="post">
+            <div class="input-box">
+                <input type="text" id="billingNumber" name="billingNumber" required>
+                <label for="billingNumber">Billing Number</label>
             </div>
-        </div>
-    </nav>
-</header>
 
+            <div class="input-box">
+                <input type="number" id="amount" name="amount" step="0.01" required>
+                <label for="amount">Amount</label>
+            </div>
 
-<div class="container mt-5">
-    <h1 class="text-center">Pay Your Bill</h1>
+            <button type="submit" class="btn">Pay</button>
+        </form>
+    </div>
+</body>
 
-    @if (ViewBag.SuccessMessage != null)
-    {
-        <div class="alert alert-success text-center">@ViewBag.SuccessMessage</div>
-    }
-
-    @if (ViewBag.ErrorMessage != null)
-    {
-        <div class="alert alert-danger text-center">@ViewBag.ErrorMessage</div>
-    }
-
-    <form asp-action="Billing" method="post">
-        <div class="form-group">
-            <label for="billingNumber">Billing Number</label>
-            <input type="text" name="billingNumber" class="form-control" placeholder="Enter your bill number" required />
-        </div>
-
-        <div class="form-group">
-            <label for="amount">Amount</label>
-            <input type="number" name="amount" class="form-control" step="0.01" placeholder="Enter amount to pay" required />
-        </div>
-
-        <button type="submit" class="btn btn-primary btn-block">Pay</button>
-    </form>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
-
+</html>

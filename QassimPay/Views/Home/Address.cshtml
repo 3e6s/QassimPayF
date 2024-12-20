@@ -1,0 +1,177 @@
+﻿@model QassimPay.Models.AddressModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Manage Address";
+    var addresses = ViewBag.Addresses as IEnumerable<QassimPay.Models.AddressModel>;
+    var canAddAddress = ViewBag.CanAddAddress as bool?;
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4" style="color: #003366;">Manage Address</h2>
+
+    @if (addresses != null && addresses.Any())
+    {
+        <!-- Show the table if the user has addresses -->
+        <table class="modern-table">
+            <thead>
+                <tr>
+                    <th>Street Address</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Postal Code</th>
+                    <th>Country</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var address in addresses)
+                {
+                    <tr>
+                        <td>@address.Street_Adress</td>
+                        <td>@address.City</td>
+                        <td>@address.State</td>
+                        <td>@address.Postal_Code</td>
+                        <td>@address.Country</td>
+                        <td>
+                            <form asp-action="DeleteAddress" method="post" class="d-inline">
+                                <input type="hidden" name="addId" value="@address.ADD_ID" />
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-warning text-center" role="alert">
+            No address records found.
+        </div>
+    }
+
+    @if (canAddAddress == true)
+    {
+        <!-- Show the form only if the user can add a new address -->
+        <hr />
+        <h3 class="mt-4" style="color: #003366;">Add a New Address</h3>
+
+        <form asp-action="Address" method="post" class="mt-3">
+            <div class="form-group">
+                <label asp-for="Street_Adress" style="color: #003366;"></label>
+                <input asp-for="Street_Adress" class="form-control" placeholder="Street Address" />
+                <span asp-validation-for="Street_Adress" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="City" style="color: #003366;"></label>
+                <input asp-for="City" class="form-control" placeholder="City" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="State" style="color: #003366;"></label>
+                <input asp-for="State" class="form-control" placeholder="State" />
+                <span asp-validation-for="State" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Postal_Code" style="color: #003366;"></label>
+                <input asp-for="Postal_Code" class="form-control" placeholder="Postal Code" />
+                <span asp-validation-for="Postal_Code" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Country" style="color: #003366;"></label>
+                <input asp-for="Country" class="form-control" placeholder="Country" />
+                <span asp-validation-for="Country" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Add Address</button>
+        </form>
+    }
+</div>
+
+<style>
+    .modern-table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+    }
+
+        .modern-table thead tr {
+            background-color: #003366;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .modern-table th,
+        .modern-table td {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .modern-table tbody tr {
+            border-bottom: 1px solid #e6ddd3;
+        }
+
+            .modern-table tbody tr:nth-of-type(even) {
+                background-color: #f4f6f9;
+            }
+
+            .modern-table tbody tr:hover {
+                background-color: #dce7f2;
+            }
+
+        .modern-table td {
+            color: #003366;
+            font-size: 1.1rem;
+        }
+
+    h2, h3 {
+        font-size: 2rem;
+        color: #003366;
+        font-weight: bold;
+    }
+
+    .alert {
+        font-size: 1.1rem;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .alert-warning {
+        background-color: #fffbea;
+        color: #856404;
+        border: 1px solid #ffeeba;
+    }
+
+    .form-control {
+        font-size: 1rem;
+        border-radius: 5px;
+    }
+
+    .btn-primary {
+        background-color: #003366;
+        border: none;
+        font-size: 1.1rem;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+        .btn-primary:hover {
+            background-color: #002244;
+        }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>

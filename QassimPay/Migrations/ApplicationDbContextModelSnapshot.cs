@@ -24,11 +24,11 @@ namespace QassimPay.Migrations
 
             modelBuilder.Entity("QassimPay.Models.AddressModel", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("ADD_ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ADD_ID"));
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -53,7 +53,7 @@ namespace QassimPay.Migrations
                     b.Property<int>("U_ID")
                         .HasColumnType("integer");
 
-                    b.HasKey("ID");
+                    b.HasKey("ADD_ID");
 
                     b.HasIndex("U_ID");
 
@@ -88,6 +88,102 @@ namespace QassimPay.Migrations
                     b.ToTable("Billing");
                 });
 
+            modelBuilder.Entity("QassimPay.Models.CurrencyExchangeModel", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("CurrencyFrom")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CurrencyTo")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("ExchangeRate")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("CurrencyExchange");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            CurrencyFrom = "USD",
+                            CurrencyTo = "SAR",
+                            ExchangeRate = 3.75m
+                        },
+                        new
+                        {
+                            ID = 2,
+                            CurrencyFrom = "SAR",
+                            CurrencyTo = "USD",
+                            ExchangeRate = 0.27m
+                        },
+                        new
+                        {
+                            ID = 3,
+                            CurrencyFrom = "USD",
+                            CurrencyTo = "AED",
+                            ExchangeRate = 3.67m
+                        },
+                        new
+                        {
+                            ID = 4,
+                            CurrencyFrom = "AED",
+                            CurrencyTo = "USD",
+                            ExchangeRate = 0.27m
+                        },
+                        new
+                        {
+                            ID = 5,
+                            CurrencyFrom = "USD",
+                            CurrencyTo = "EGP",
+                            ExchangeRate = 30.96m
+                        },
+                        new
+                        {
+                            ID = 6,
+                            CurrencyFrom = "EGP",
+                            CurrencyTo = "USD",
+                            ExchangeRate = 0.032m
+                        },
+                        new
+                        {
+                            ID = 7,
+                            CurrencyFrom = "USD",
+                            CurrencyTo = "QAR",
+                            ExchangeRate = 3.64m
+                        },
+                        new
+                        {
+                            ID = 8,
+                            CurrencyFrom = "QAR",
+                            CurrencyTo = "USD",
+                            ExchangeRate = 0.27m
+                        },
+                        new
+                        {
+                            ID = 9,
+                            CurrencyFrom = "USD",
+                            CurrencyTo = "KWD",
+                            ExchangeRate = 0.31m
+                        },
+                        new
+                        {
+                            ID = 10,
+                            CurrencyFrom = "KWD",
+                            CurrencyTo = "USD",
+                            ExchangeRate = 3.24m
+                        });
+                });
+
             modelBuilder.Entity("QassimPay.Models.TransferModel", b =>
                 {
                     b.Property<int>("Receipt_ID")
@@ -105,8 +201,8 @@ namespace QassimPay.Migrations
                     b.Property<int>("Sender_ID")
                         .HasColumnType("integer");
 
-                    b.Property<DateOnly>("T_date")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("T_date")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Receipt_ID");
 
@@ -119,36 +215,43 @@ namespace QassimPay.Migrations
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("email");
 
                     b.Property<string>("First_name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("first_name");
 
                     b.Property<string>("Last_name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("last_name");
 
                     b.Property<decimal>("Monthly_income")
-                        .HasColumnType("numeric");
+                        .HasColumnType("numeric")
+                        .HasColumnName("monthly_income");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("password");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("username");
 
                     b.HasKey("ID");
 
-                    b.ToTable("USER", (string)null);
+                    b.ToTable("User", (string)null);
                 });
 
             modelBuilder.Entity("QassimPay.Models.WalletModel", b =>
@@ -166,8 +269,6 @@ namespace QassimPay.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Wallet_ID");
-
-                    b.HasIndex("User_ID");
 
                     b.HasIndex("User_ID");
 

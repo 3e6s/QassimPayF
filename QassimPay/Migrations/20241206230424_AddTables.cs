@@ -5,7 +5,7 @@
 namespace QassimPay.Migrations
 {
     /// <inheritdoc />
-    public partial class one2many : Migration
+    public partial class AddTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

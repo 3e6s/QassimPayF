@@ -1,22 +1,195 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
+﻿/* Body Styling */
 body {
-  margin-bottom: 60px;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f8f9fa; /* Light neutral background */
+    margin: 0;
+    color: #343a40;
+    min-height: 100vh; /* Ensure body height fills the viewport */
+    display: flex;
+    flex-direction: column;
 }
+
+/* Navbar Styling */
+/* Navbar Styling */
+.navbar {
+    background-color: #003366; /* Dark blue */
+    padding: 10px 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar-brand {
+    font-size: 1.5em;
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+    .navbar-brand:hover {
+        color: #b06653;
+    }
+
+.navbar-logo {
+    height: 66px;
+    margin-right: 10px;
+}
+
+.navigation {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-link {
+    font-size: 1.2em;
+    color: #f0f8ff;
+    text-decoration: none;
+    font-weight: 500;
+    position: relative;
+    padding: 5px 0;
+    transition: color 0.3s ease;
+}
+
+    .nav-link:hover {
+        color: #b06653;
+    }
+
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 3px;
+        background: #b06653;
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.5s ease;
+    }
+
+    .nav-link:hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
+    }
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .navigation {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .nav-link {
+        text-align: center;
+    }
+}
+
+/* Footer Styling */
+.footer {
+    background-color: #003366;
+    color: #ffffff; /* White text for the footer */
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    margin-top: auto; /* Push the footer to the bottom */
+}
+
+    .footer p {
+        margin: 0;
+    }
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .navigation {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .nav-link {
+        text-align: center;
+    }
+}
+.navbar-logo {
+ height: 66px;
+  width: 238px;
+    display: inline-block;
+}
+/* About Us Page Styling */
+.about-us-container {
+    display: flex;
+    flex-direction: row; /* عرض النص والصورة بجانب بعض */
+    align-items: center; /* محاذاة العناصر رأسياً */
+    justify-content: space-between; /* توزيع المساحة بالتساوي */
+    padding: 50px; /* زيادة التباعد الداخلي */
+    gap: 30px; /* تباعد أكثر بين النص والصورة */
+    background-color: #003366; /* خلفية خفيفة */
+    border-radius: 15px; /* حواف مستديرة للحاوية */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* ظل أكثر وضوحاً لإبراز الحاوية */
+    min-height: 600px; /* تطويل البوكس */
+}
+
+
+.about-us-content {
+    flex: 1; /* النص يأخذ نصف العرض */
+    padding-right: 30px; /* زيادة التباعد على اليمين */
+    color: #f5ece2; /* لون النص */
+    font-family: 'Roboto', sans-serif;
+}
+
+.about-us-title {
+    font-size: 3rem; /* حجم أكبر للعنوان */
+    margin-bottom: 25px; /* تباعد أسفل العنوان */
+    color: #e6ddd3; /* لون مميز للعنوان */
+    border-bottom: 3px solid #b06653; /* خط أكثر وضوحاً أسفل العنوان */
+    padding-bottom: 15px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* تأثير ظل للنص */
+}
+
+.about-us-content p {
+    font-size: 1.3rem; /* حجم نص أكبر */
+    line-height: 1.8; /* تباعد أكبر بين الأسطر */
+    margin-bottom: 20px; /* تباعد أكثر بين الفقرات */
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2); /* تأثير ظل خفيف للنص */
+}
+
+.about-us-image-container {
+    flex: 1; /* الصورة تأخذ النصف الآخر */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about-us-logo {
+    max-width: 100%; /* الصورة تناسب العرض المتاح */
+    max-height: 350px; /* زيادة الحد الأقصى لارتفاع الصورة */
+    border-radius: 15px; /* حواف مستديرة للصورة */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* ظل أكثر وضوحاً للصورة */
+    transition: transform 0.3s ease; /* تأثير حركة عند التفاعل */
+}
+
+    .about-us-logo:hover {
+        transform: scale(1.05); /* تكبير الصورة عند التفاعل */
+    }
+
+/* استجابة الشاشة */
+@media (max-width: 768px) {
+    .about-us-container {
+        flex-direction: column; /* النص فوق الصورة عند تصغير الشاشة */
+        text-align: center;
+        padding: 30px; /* تقليل التباعد الداخلي */
+    }
+
+    .about-us-content {
+        padding-right: 0; /* إزالة التباعد على اليمين */
+    }
+
+    .about-us-logo {
+        max-height: 250px; /* تقليل حجم الصورة للشاشات الصغيرة */
+    }
+}
+

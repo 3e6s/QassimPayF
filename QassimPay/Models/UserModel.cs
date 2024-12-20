@@ -20,5 +20,6 @@ namespace QassimPay.Models
         public ICollection<WalletModel> Wallets { get; set; } = new List<WalletModel>();
         public ICollection<AddressModel> Adresses { get; set; } = new List<AddressModel>();
 
+
     }
 }

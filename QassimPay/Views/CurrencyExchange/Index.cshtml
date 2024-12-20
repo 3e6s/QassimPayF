@@ -1,0 +1,214 @@
+﻿@model IEnumerable<QassimPay.Models.CurrencyExchangeModel>
+
+@{
+    ViewData["Title"] = "Currency Exchange Rates";
+}
+
+<div class="container mt-5">
+    <!-- Currency Converter Form -->
+    <div class="form-box mt-4">
+        <h3 class="text-center">Currency Converter</h3>
+        <form id="currency-converter-form">
+            <!-- From Currency -->
+            <div class="form-group">
+                <label for="fromCurrency" class="form-label">From Currency</label>
+                <select id="fromCurrency" name="fromCurrency" class="form-control" required>
+                    <option value="" disabled selected>Select Currency</option>
+                    @foreach (var currency in ViewBag.Currencies)
+                    {
+                        <option value="@currency">@currency</option>
+                    }
+                </select>
+            </div>
+
+            <!-- To Currency -->
+            <div class="form-group">
+                <label for="toCurrency" class="form-label">To Currency</label>
+                <select id="toCurrency" name="toCurrency" class="form-control" required>
+                    <option value="" disabled selected>Select Currency</option>
+                    @foreach (var currency in ViewBag.Currencies)
+                    {
+                        <option value="@currency">@currency</option>
+                    }
+                </select>
+            </div>
+
+            <!-- Amount -->
+            <div class="input-box">
+                <input type="number" id="amount" name="amount" step="0.01" required />
+                <label for="amount">Amount</label>
+            </div>
+
+            <button type="button" id="convert-button" class="btn">Convert</button>
+        </form>
+
+        <!-- Result Area -->
+        <div id="result-area" class="mt-4"></div>
+    </div>
+
+    <!-- Toggle Exchange Rates Table -->
+    <div class="mt-5">
+        <button id="toggle-rates-button" class="btn btn-secondary btn-block mb-3">
+            Show/Hide Exchange Rates
+        </button>
+        <div id="rates-table-container" style="display: none;">
+            <h2 class="text-center table-title">Currency Exchange Rates</h2>
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Currency From</th>
+                        <th>Currency To</th>
+                        <th>Exchange Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var rate in Model)
+                    {
+                        <tr>
+                            <td>@rate.CurrencyFrom</td>
+                            <td>@rate.CurrencyTo</td>
+                            <td>@rate.ExchangeRate</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Slide toggle for the rates table
+        $("#toggle-rates-button").click(function () {
+            $("#rates-table-container").slideToggle();
+        });
+
+        // Convert button functionality
+        $("#convert-button").click(function () {
+            const fromCurrency = $("#fromCurrency").val();
+            const toCurrency = $("#toCurrency").val();
+            const amount = $("#amount").val();
+
+            if (!fromCurrency || !toCurrency || !amount) {
+                $("#result-area").html('<div class="alert alert-danger">Please fill in all fields.</div>');
+                return;
+            }
+
+            $.ajax({
+                url: "/CurrencyExchange/Convert",
+                type: "POST",
+                data: { fromCurrency, toCurrency, amount },
+                success: function (response) {
+                    if (response.success) {
+                        $("#result-area").html(`
+                            <div class="alert alert-success">
+                                Converted Amount: <strong>${response.convertedAmount}</strong> ${response.toCurrency}
+                            </div>
+                        `);
+                    } else {
+                        $("#result-area").html(`
+                            <div class="alert alert-danger">${response.message}</div>
+                        `);
+                    }
+                },
+                error: function () {
+                    $("#result-area").html(`
+                        <div class="alert alert-danger">An error occurred. Please try again.</div>
+                    `);
+                }
+            });
+        });
+    });
+</script>
+
+<style>
+    .form-box {
+        margin: 16px auto;
+        background-color: #e9e9ed;
+        padding: 29px;
+        border-radius: 35px;
+        box-shadow: 0 0 86px rgba(0, 0, 0, 0.4);
+        max-width: 918px;
+    }
+
+        .form-box h3 {
+            font-size: 2em;
+            color: #036;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+    .input-box {
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+        .input-box label {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            font-size: 1em;
+            color: #036;
+            font-weight: 500;
+            pointer-events: none;
+            transition: 0.5s;
+        }
+
+        .input-box input:focus ~ label,
+        .input-box input:valid ~ label {
+            top: -5px;
+            font-size: 0.85em;
+            color: #036;
+        }
+
+        .input-box input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 1em;
+            color: #036;
+            font-weight: 600;
+            padding: 14px;
+            border-bottom: 2px solid #036;
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        font-size: 1em;
+        color: #036;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+    }
+
+    .btn {
+        width: 100%;
+        height: 45px;
+        background: #036;
+        border: none;
+        outline: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1em;
+        color: #fff;
+        font-weight: 572;
+        margin-top: 30px;
+    }
+
+        .btn:hover {
+            background: #002366;
+            color: #fff;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+    .table-title {
+        font-size: 1.8em;
+        color: #036;
+        text-align: center;
+        margin-bottom: 20px;
+        padding-top: 10px;
+    }
+</style>

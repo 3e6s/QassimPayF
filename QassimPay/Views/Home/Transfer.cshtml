@@ -1,64 +1,139 @@
-﻿@model TransferModel
+﻿@model QassimPay.Models.TransferModel
 @{
-    Layout = null;
-    ViewData["Title"] = "Transfer";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Ensures the shared layout is used
+    ViewData["Title"] = "Transfer Funds";
 }
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/QassimPay.styles.css" asp-append-version="true" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&display=swap">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .form-box {
+            margin: 62px auto;
+            background-color: #e9e9ed;
+            padding: 54px;
+            border-radius: 35px;
+            box-shadow: 0 0 86px rgba(0, 0, 0, 0.4);
+            max-width: 874px;
+        }
+
+        .form-box h2 {
+            font-size: 2em;
+                color: #036F; /* Light text for heading */
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .input-box {
+            position: relative;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .input-box label {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            font-size: 1em;
+                color: #036; /* Light text for labels */
+            font-weight: 500;
+            pointer-events: none;
+            transition: 0.5s;
+        }
+
+ 
+
+        .input-box input {
+            width: 100%;
+            background: transparent; /* Transparent background */
+            border: none;
+            outline: none;
+            font-size: 1em;
+                color: #036; /* Light text */
+            font-weight: 600;
+            padding: 14px;
+                border-bottom: 2px solid #036;
+            }
+
+        .input-box input:focus {
+            background-color: transparent; /* Ensure background remains transparent */
+        }
+
+        .btn {
+            width: 100%;
+            height: 52px;
+            background: #036;
+            border: none;
+            outline: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            color: #fff;
+            font-weight: 572;
+            margin-top: 30px;
+        }
+
+        .btn:hover {
+                background: #002366; /* Darker button background on hover */
+            color: #fff; /* Change text color on hover */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Add shadow on hover */
+        }
+
+        .link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #036; /* Light blue text for links */
+            text-decoration: none;
+        }
+
+        .input-box input:focus ~ label,
+        .input-box input:valid ~ label {
+            top: -5px;
+            font-size: 0.85em;
+            color: #001366; /* Highlight color for focused label */
+        }
+        .link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
-<header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container">
-            <a class="navbar-brand" href="/Home/Login">QassimPay</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item"><a class="nav-link" href="/Home/Wallet">Wallet</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/Home/Transfer">Transfer</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/Home/Billing">Billing</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/Home/Transfer_History">Transfer History</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/Home/Billing_History">Billing History</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/Home/Currency-exchange">Currency Exchange</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/Home/Address">Address</a></li>
-                    <li class="nav-item"><a class="nav-link" asp-action="Logout">Logout</a></li>
-                </ul>
+
+<body>
+    <!-- Transfer Funds Form -->
+    <div class="form-box">
+        <h2>Transfer Funds</h2>
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="alert alert-danger text-center" role="alert">@ViewBag.ErrorMessage</div>
+        }
+        @if (ViewBag.SuccessMessage != null)
+        {
+            <div class="alert alert-success text-center" role="alert">@ViewBag.SuccessMessage</div>
+        }
+
+        <form method="post">
+            <div class="input-box">
+                <input type="number" id="recipientWalletId" name="recipientWalletId" required>
+                <label for="recipientWalletId">To Whom (Wallet ID)</label>
             </div>
-        </div>
-    </nav>
-</header>
+            <div class="input-box">
+                <input type="number" id="amount" name="amount" step="0.01" required>
+                <label for="amount">Amount</label>
+            </div>
+            <button type="submit" class="btn">Transfer</button>
+        </form>
+        <a asp-action="Wallet" class="link">Go back to Wallet</a>
+    </div>
+</body>
 
-
-<div class="container mt-4">
-    <h2 class="text-center">Transfer Funds</h2>
-    <form method="post">
-        <div class="form-group">
-            <label for="recipientWalletId">To Whom (Wallet ID)</label>
-            <input type="number" id="recipientWalletId" name="recipientWalletId" class="form-control" required />
-        </div>
-        <div class="form-group mt-2">
-            <label for="amount">Amount</label>
-            <input type="number" id="amount" name="amount" step="0.01" class="form-control" required />
-        </div>
-        <button type="submit" class="btn btn-primary mt-3">Transfer</button>
-    </form>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
-
-@if (ViewBag.ErrorMessage != null)
-{
-    <div class="alert alert-danger mt-3">@ViewBag.ErrorMessage</div>
-}
-@if (ViewBag.SuccessMessage != null)
-{
-    <div class="alert alert-success mt-3">@ViewBag.SuccessMessage</div>
-}
+</html>
